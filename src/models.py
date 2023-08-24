@@ -2,11 +2,17 @@ from flask_sqlalchemy import SQLAlchemy
 
 db = SQLAlchemy()
 
+user_people = db.Table('user_people',
+    db.Column('user_id', db.Integer, db.ForeignKey('user.id'), primary_key=True),
+    db.Column('people_id', db.Integer, db.ForeignKey('people.id'), primary_key=True)
+)
+
 class User(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     email = db.Column(db.String(120), unique=True, nullable=False)
     password = db.Column(db.String(80), unique=False, nullable=False)
     is_active = db.Column(db.Boolean(), unique=False, nullable=False)
+    peoples_id = db.relationship('People', secondary=user_people, backref=db.backref('peoples_favorites', lazy = True))
 
     def __repr__(self):
         return '<User %r>' % self.username

@@ -52,6 +52,31 @@ def get_users():
 
     return jsonify(users = [user.serialize() for user in users]), 200
 
+@app.route('/users/<int:user_id>', methods=['GET'])
+def get_user_id(user_id):
+
+    user = User.query.get(user_id)
+    if user is not None:
+        return jsonify(user = [user.serialize()]), 200
+    return jsonify({"msg":"No existe el usuario"}),400
+
+@app.route('/people', methods=['GET'])
+def get_people():
+
+    peoples = People.query.all()
+
+    return jsonify(peoples = [people.serialize() for people in peoples]), 200
+
+@app.route('/people/<int:people_id>', methods=['GET'])
+def get_people_id(people_id):
+
+    people = People.query.get(people_id)
+
+    if people is not None:
+     return jsonify(people = [people.serialize()]), 200
+    
+    return jsonify({"msg":"No existe el personaje"}),400
+
 
 @app.route('/planets', methods=['GET'])
 def get_planets():
@@ -61,36 +86,15 @@ def get_planets():
     return jsonify(planets = [planet.serialize() for planet in planets]), 200
 
 
-@app.route('/people', methods=['GET'])
-def get_people():
-
-    peoples = People.query.all()
-
-    return jsonify(peoples = [people.serialize() for people in peoples]), 200
-
-@app.route('/users/<int:user_id>', methods=['GET'])
-def get_user_id(user_id):
-
-    user = User.query.get(user_id)
-
-    return jsonify(user = [user.serialize()]), 200
-
-@app.route('/people/<int:people_id>', methods=['GET'])
-def get_people_id(people_id):
-
-    people = People.query.get(people_id)
-
-    return jsonify(people = [people.serialize()]), 200
-
 @app.route('/planets/<int:planet_id>', methods=['GET'])
 def get_planet_id(planet_id):
      
     planet = Planet.query.get(planet_id)
 
-    return jsonify(planet = [planet.serialize()]), 200
+    if planet is not None:
+     return jsonify(planet = [planet.serialize()]), 200
 
-
-
+    return jsonify({"msg":"No existe el planeta"}),400
 
 
 # this only runs if `$ python src/app.py` is executed
